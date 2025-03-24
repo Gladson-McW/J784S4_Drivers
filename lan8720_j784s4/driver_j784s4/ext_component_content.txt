@@ -1,0 +1,27 @@
+# External_drivers_component.mk
+ifeq ($(ext_drv_component_make_include), )
+
+ext_drv_LIB_LIST = enet_lan8720
+ext_drv_comp_LIB_LIST = $(ext_drv_LIB_LIST)
+
+# enet_lan8720 LIB
+export enet_lan8720_COMP_LIST = enet_lan8720
+enet_lan8720_RELPATH = ti/drv/enet/src/phy
+enet_lan8720_PATH = $(EXTERNAL_DRIVERS_COMP_PATH)
+export enet_lan8720_LIBNAME = ti.enet_lan8720
+export enet_lan8720_LIBPATH = $(enet_lan8720_PATH)/lib
+export enet_lan8720_OBJPATH = $(enet_lan8720_RELPATH)
+export enet_lan8720_MAKEFILE = -f build/makefile_enet_lan8720.mk
+export enet_lan8720_BOARD_DEPENDENCY = no
+export enet_lan8720_CORE_DEPENDENCY = no
+export enet_lan8720_SOC_DEPENDENCY = yes
+export enet_lan8720_PKG_LIST = enet_lan8720
+export enet_lan8720_SOCLIST = j784s4
+export enet_lan8720_j784s4_CORELIST = mcu2_0
+export enet_lan8720_XDC_CONFIGURO = no
+
+export ext_drv_LIB_LIST
+
+ext_drv_component_make_include := 1
+endif
+
