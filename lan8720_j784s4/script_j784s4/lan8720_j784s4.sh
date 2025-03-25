@@ -22,8 +22,8 @@ BUILD_PATH="$(HOME_PATH)/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4
 
 
 # For the required tools
-#cd ${HOME_PATH}/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04
-cd /mnt/d/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04
+cd ${HOME_PATH}/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04
+#cd /mnt/d/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04
 
 #./sdk_builder/scripts/setup_psdk_rtos.sh
 
