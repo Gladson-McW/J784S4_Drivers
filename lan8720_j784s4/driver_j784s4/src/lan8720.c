@@ -7,10 +7,8 @@
  * functions for arbitrary data packets. Additionally, it implements the EnetPhy_Drv interface
  * for seamless integration with the upper-layer Ethernet PHY framework.
  *
- * (C) Texas Instruments Incorporated 2020
- * Redistribution and use in source and binary forms, with or without modification, are permitted.
  *
- * @date March 18, 2025
+ * @date March 24, 2025
  */
 
 /* ========================================================================== */
@@ -30,6 +28,8 @@
 #include <ti/drv/enet/include/core/enet_ioctl.h>
 #include <ti/drv/enet/include/phy/enetphy.h>
 #include <ti/csl/cslr_mdio.h>
+#include <ti/drv/enet/priv/core/enet_trace_priv.h>
+
 
 /* ========================================================================== */
 /*                           Macro Definitions                                */
@@ -244,12 +244,17 @@ static bool Lan8720_isPhyDevSupported(EnetPhy_Handle hPhy, const EnetPhy_Version
  */
 static bool Lan8720_isMacModeSupported(EnetPhy_Handle hPhy, EnetPhy_Mii mii)
 {
+    bool supported;
     switch (mii)
     {
         case ENETPHY_MAC_MII_MII:
         case ENETPHY_MAC_MII_RMII:
+            supported = true;
             return true;
+        /* LAN8720 doesn't support RGMII Interface*/
+        case ENETPHY_MAC_MII_RGMII:
         default:
+            supported=false;
             return false;
     }
 }
@@ -304,7 +309,7 @@ static void Lan8720_setMiiMode(EnetPhy_Handle hPhy, EnetPhy_Mii mii)
     ENETTRACE_DBG("PHY %u: MII mode: %u", hPhy->addr, mii);
     if (mii == ENETPHY_MAC_MII_RMII)
     {
-        val = RGMIICTL_RMIIEN; 
+        val = RMIICTL_RMIIEN; 
     }
     Lan8720_rmwExtReg(hPhy, LAN8720_RMIICTL, val, RMIICTL_RMIIEN);
 }
@@ -423,12 +428,12 @@ static int32_t Lan8720_setClkDelay(EnetPhy_Handle hPhy, uint32_t txDelay, uint32
     uint16_t val;
     uint32_t delay, delayCtrl;
     int32_t status = ENETPHY_SOK;
-    if ((txDelay <= RGMIIDCTL_DELAY_MAX) && (rxDelay <= RGMIIDCTL_DELAY_MAX))
+    if ((txDelay <= RMIIDCTL_DELAY_MAX) && (rxDelay <= RMIIDCTL_DELAY_MAX))
     {
         ENETTRACE_DBG("PHY %u: Setting TX delay %u ps, RX delay %u ps", hPhy->addr, txDelay, rxDelay);
         delay = (txDelay > 0U) ? txDelay : 1U;
         delayCtrl = ENETPHY_DIV_ROUNDUP(delay, RMIIDCTL_DELAY_STEP) - 1U;
-        val = (uint16_t)((delayCtrl << RMIIDCTL_TXDLYCTRL_OFFSET) & RGMIIDCTL_TXDLYCTRL_MASK);
+        val = (uint16_t)((delayCtrl << RMIIDCTL_TXDLYCTRL_OFFSET) & RMIIDCTL_TXDLYCTRL_MASK);
         delay = (rxDelay > 0U) ? rxDelay : 1U;
         delayCtrl = ENETPHY_DIV_ROUNDUP(delay, RMIIDCTL_DELAY_STEP) - 1U;
         val |= (uint16_t)((delayCtrl << RMIIDCTL_RXDLYCTRL_OFFSET) & RMIIDCTL_RXDLYCTRL_MASK);
@@ -576,3 +581,6 @@ EnetPhy_Drv gEnetPhyDrvLan8720 =
     .printRegs          = Lan8720_printRegs,
 #endif
 };
+
+
+

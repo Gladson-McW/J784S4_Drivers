@@ -107,7 +107,7 @@ extern "C" {
 /* Special Modes Register */
 #define LAN8720_SPECIAL_MODES         (0x12U)  /*!< Special Modes Register */
 #define SPECIAL_MODES_MODE            (0x07U)   /*!< Mode selection mask */
-/* SPECIAL_MODES_PHYAD is not defined here */
+/* SPECIAL_MODES_PHYAD not defined */
 
 /* Symbol Error Counter Register */
 #define LAN8720_SYMBOL_ERROR_COUNTER  (0x1AU)      /*!< Symbol Error Counter Register */
@@ -116,7 +116,7 @@ extern "C" {
 #define LAN8720_CONTROL_STATUS        (0x1BU)      /*!< Control Status Register */
 #define SCS_AMDIXCTRL                 (1U << 15)   /*!< HP Auto-MDIX Control */
 #define SCS_CH_SELECT                 (1U << 13)   /*!< Manual Channel Select */
-#define SCS_SQEOFF                    (1U << 11)   /*!< Disable Signal Quality Error */ 
+#define SCS_SQEOFF                    (1U << 11)   /*!< Disable Signal Quality Error */
 #define SCS_XPOL                      (1U << 4)    /*!< Polarity state of 10BASE-T */
 
 /* Interrupt Source Register */
@@ -131,14 +131,13 @@ extern "C" {
 
 /* Interrupt Mask Register */
 #define LAN8720_INTERRUPT_MASK        (0x1EU)      /*!< Interrupt Mask Register */
-/* INTERRUPT_MASK_BITS not defined */
 
 /* Physical Special Control/Status Register */
 #define LAN8720_SPECIAL_CTRL_STATUS   (0x1FU)      /*!< Special Control/Status Register */
 #define PHY_SCS_AUTODONE              (1U << 12)   /*!< Auto-negotiation done indication */
 #define PHY_SCS_ENABLE_4B5B           (1U << 6)    /*!< Enable 4B/5B encoding/decoding */
 #define PHY_SCS_SPEED_INDI            ((1U << 4) | (1U << 3))
-#define PHY_SCS_SCRAMBLE_DISABLE      (0U)         /*!< Enable data scrambling */
+#define PHY_SCS_SCRAMBLE_DISABLE      (0U)         /*!< Enable data scrambling*/
 
 /* LED Control Register */
 #define LAN8720_LED_CONTROL           (0x18U)      /*!< LED Control Register */
@@ -147,11 +146,8 @@ extern "C" {
  * Additional Registers for Extended Functionality
  * ------------------------------------------------------------------------- */
 
-/* RGMII Control Register for enabling RGMII mode and clock delay adjustments */
-#define LAN8720_RMIICTL          (0x32U)  /*!< RGMII Control Register */
-#define RMIICTL_RMIIEN          (1U << 7) /*!< Enable RGMII mode */
-#define RMIICTL_TXCLKDLY        (1U << 1) /*!< Enable TX clock delay */
-#define RMIICTL_RXCLKDLY        (1U << 0) /*!< Enable RX clock delay */
+/* RMII Control Register for enabling RMII mode and clock delay adjustments */ 
+#define LAN8720_RMIICTL          (0x32U)  /*!< RMII Control Register */  // Note: Renamed to RMIICTL to reflect RMII usage in code\n#define RMIICTL_RMIIEN          (1U << 7) /*!< Enable RMII mode */\n#define RMIICTL_TXCLKDLY        (1U << 1) /*!< Enable TX clock delay */\n#define RMIICTL_RXCLKDLY        (1U << 0) /*!< Enable RX clock delay */
 
 /* Viterbi Module Configuration Register (for idle threshold settings) */
 #define LAN8720_VTMCFG           (0x53U)  /*!< VTM Configuration Register */
@@ -183,8 +179,16 @@ extern "C" {
 #define GPIOMUXCTRL_GPIO1_MASK    (0x00F0U)
 #define GPIOMUXCTRL_GPIO1_OFFSET  (4U)
 
-/* LED Control Register 1 */
+/* LED Control Register 1 (For individual LED selection) */
 #define LAN8720_LEDCR1           (0x18U)  /*!< LED Control Register 1 */
+#define LEDCR1_LED0SEL_OFFSET    (0U)      /*!< LED0 selection starts at bit 0 */
+#define LEDCR1_LED0SEL_MASK      (0x000FU) /*!< LED0 selection mask (4 bits) */
+#define LEDCR1_LED1SEL_OFFSET    (4U)      /*!< LED1 selection starts at bit 4 */
+#define LEDCR1_LED1SEL_MASK      (0x00F0U) /*!< LED1 selection mask (4 bits) */
+#define LEDCR1_LED2SEL_OFFSET    (8U)      /*!< LED2 selection starts at bit 8 */
+#define LEDCR1_LED2SEL_MASK      (0x0F00U) /*!< LED2 selection mask (4 bits) */
+#define LEDCR1_LED3SEL_OFFSET    (12U)     /*!< LED3 selection starts at bit 12 */
+#define LEDCR1_LED3SEL_MASK      (0xF000U) /*!< LED3 selection mask (4 bits) */
 
 /* Global Control Register for reset and restart operations */
 #define LAN8720_CTRL             (0x1FU)  /*!< Global Control Register */
@@ -195,8 +199,8 @@ extern "C" {
 #define LAN8720_CFG3             (0x1EU)  /*!< Configuration Register 3 */
 #define CFG3_ROBUSTAUTOMDIX     (1U << 9)  /*!< Robust Auto-MDIX Enable */
 
-/* RGMII Delay Control Register for clock delay adjustments */
-#define LAN8720_RGMIIDCTL        (0x86U)  /*!< RGMII Delay Control Register */
+/* RGMII (RMII in our case) Delay Control Register for clock delay adjustments */
+#define LAN8720_RMIIDCTL        (0x86U)  /*!< RGMII Delay Control Register */
 #define RMIIDCTL_TXDLYCTRL_MASK (0x00F0U)
 #define RMIIDCTL_TXDLYCTRL_OFFSET (4U)
 #define RMIIDCTL_RXDLYCTRL_MASK (0x000FU)
@@ -204,8 +208,46 @@ extern "C" {
 #define RMIIDCTL_DELAY_MAX      (4000U) /* 4.00 ns */
 #define RMIIDCTL_DELAY_STEP     (250U)  /* 0.25 ns */
 
-#ifdef __cplusplus
+/* Header Definitions Needed to be Considered - Not Configured */
+/* Clock delay definitions (in arbitrary units, e.g., picoseconds) */
+#define RMIICTL_TXCLKDLY                (1000U)
+#define RMIICTL_RXCLKDLY                (1000U)
+
+/* RGMII/RMII Delay Control Register */
+#define LAN8720_RMIIDCTL                (0x86U)
+
+/* TX FIFO depth definitions (using a 16-bit field in PHYCR) */
+#define PHYCR_TXFIFODEPTH_MASK          (0xC000U)
+#define PHYCR_TXFIFODEPTH_3B            (0x0000U)  /* 3 bytes/nibbles depth */
+#define PHYCR_TXFIFODEPTH_4B            (0x4000U)  /* 4 bytes/nibbles depth */
+#define PHYCR_TXFIFODEPTH_6B            (0x8000U)  /* 6 bytes/nibbles depth */
+#define PHYCR_TXFIFODEPTH_8B            (0xC000U)  /* 8 bytes/nibbles depth */
+
+/* PHY MDIO crossover settings */
+#define PHYCR_MDICROSSOVER_AUTO         (0x0040U)
+#define PHYCR_MDICROSSOVER_MDI          (0x0020U)
+#define PHYCR_MDICROSSOVER_MASK         (0x0060U)
+
+/* PHY Control Register */
+#define LAN8720_PHYCR                   (0x1BU)
+
+/* Loopback configuration definitions */
+#define LAN8720_LOOPCR                  (0xFEU)
+#define LOOPCR_CFG_LOOPBACK             (0xE720U)
+#define LOOPCR_CFG_NORMAL               (0xE721U)
+
+/* FLD Threshold Configuration */
+#define FLDTHRCFG_FLDTHR_MASK           (0x0007U)
+
+/* RGMII (RMII) mode enabling macro */
+#define RMIICTL_RMIIEN                   (1U << 7)
+
+/* Example IOCTL command for setting MAC port state */
+#define ENET_IOCTL_SET_MAC_PORT_STATE    (0x1000U)
+
+#define ENET_DMA_DIR_TX                  (0x1000U)
+
+#ifdef __cplusplus\n
 }
 #endif
-
 #endif /* LAN8720_PRIV_H_ */
