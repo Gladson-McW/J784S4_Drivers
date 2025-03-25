@@ -1,21 +1,21 @@
 #!/bin/bash
 
 # Variables
-#HOME_PATH="/home/dockeruser/mcw"
-HOME_PATH="/mnt/d/"
-#SDK_PATH="$(HOME_PATH)/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/drv/enet/src/phy"
-SDK_PATH="/mnt/d/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/drv/enet/src/phy"
-#SDK_PHY_H="$(HOME_PATH)/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/drv/enet/include/phy"
-SDK_PHY_H="/mnt/d/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/drv/enet/include/phy"
+HOME_PATH="/home/dockeruser/mcw"
+#HOME_PATH="/mnt/d/"
+SDK_PATH="$(HOME_PATH)/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/drv/enet/src/phy"
+#SDK_PATH="/mnt/d/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/drv/enet/src/phy"
+SDK_PHY_H="$(HOME_PATH)/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/drv/enet/include/phy"
+#SDK_PHY_H="/mnt/d/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/drv/enet/include/phy"
 
-DRV_PATH="/mnt/d/TI_J784S4/TDA4AP/lan8720_j784s4"
+#DRV_PATH="/mnt/d/TI_J784S4/TDA4AP/lan8720_j784s4"
 
-#DRV_PATH= "$(HOME_PATH)/lan8720_j784s4"
-#OUTPUT_PATH="${HOME_PATH}/Output"
-OUTPUT_PATH="/mnt/d/Output"
+DRV_PATH= "$(HOME_PATH)/lan8720_j784s4"
+OUTPUT_PATH="${HOME_PATH}/Output"
+#OUTPUT_PATH="/mnt/d/Output"
 
-#BUILD_PATH="$(HOME_PATH)/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/build"
-BUILD_PATH="/mnt/d/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/build"
+BUILD_PATH="$(HOME_PATH)/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/build"
+#BUILD_PATH="/mnt/d/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/build"
 
 #PINMUX_PATH="$(HOME_PATH)/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04/pdk_j784s4_10_01_00_25/packages/ti/board/src/j784s4_evm"
 #BUILD_OS_TYPE="FreeRTOS"
@@ -87,8 +87,8 @@ make -sj  BOARD=j784s4_evm CORE=mcu2_0
 
 
 cd $HOME_PATH
-mkdir -p /mnt/d/Output
-#mkdir -p $(OUTPUT_PATH)
+#mkdir -p /mnt/d/Output
+mkdir -p $(OUTPUT_PATH)
 
 
 tar -czvf ${OUTPUT_PATH}/ti-processor-sdk-rtos-j784s4-evm-10_01_00_04_MOFIFIED.tar.gz ti-processor-sdk-rtos-j784s4-evm-10_01_00_04
